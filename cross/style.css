@@ -1,0 +1,23 @@
+.nu-cross {
+    width: 8px;
+    height: 8px;
+}
+.nu-cross:before {
+    width: 2px;
+    height: 100%;
+    background: blue;
+    content: "";
+    position: absolute;
+    left: 50%;        
+    transform: rotate(-45deg);
+}
+
+.nu-cross:after {
+    width: 2px;
+    height: 100%;
+    background: blue;
+    content: "";
+    position: absolute;    
+    left: 50%;    
+    transform: rotate(45deg);
+}
