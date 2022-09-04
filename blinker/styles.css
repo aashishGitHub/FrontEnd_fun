@@ -16,13 +16,13 @@ h2{
 .header {
   position: absolute;
   border-top: 5px solid rgba(2, 19, 2, 0.5);
-  top: 10vh;
+  top: 30px;
   height: 100vh;
   width:100vw;
 }
 .header ul {
   position: relative;
-  top: -4vh;
+  top: -20px;
   list-style: none;
   padding: 0;
   white-space: nowrap;
