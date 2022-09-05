@@ -1,7 +1,7 @@
 body {
   margin: 0 auto;
   background: rgb(54, 54, 54);
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 body > h2 {
   color: #fff;
@@ -26,7 +26,7 @@ body > h2 {
   list-style: none;
   padding: 0;
   white-space: nowrap;
-  overflow: hidden;
+  overflow-x: hidden;
   margin: 0;
 }
 
@@ -86,7 +86,8 @@ li::before {
 }
 .lid,
 .box {
-  background: rgb(254, 0, 0) radial-gradient(white 15%, transparent 15.1%);
+  background: radial-gradient(white 15%, transparent 15.1%),
+    radial-gradient(white 15%, transparent 15.1%) rgb(254, 0, 0);
   background-position: 0 0, 20px 20px;
   background-size: 40px 40px;
 }
@@ -100,8 +101,7 @@ li::before {
   /* transitions */
   top: 0;
   left: -2px;
-  transition: top ease-out 0.5s, left ease-out 0.5s,
-   transform ease-out 0.5s;
+  transition: top ease-out 0.5s, left ease-out 0.5s, transform ease-out 0.5s;
 }
 .box {
   height: 75%;
@@ -144,9 +144,9 @@ li::before {
 .magic-box:hover .lid {
   top: -60px;
   transform: rotateZ(10deg);
-  left :1vw;
+  left: 1vw;
 }
 .magic-box:hover .promo {
-    top: -60px;
-    width: 100%;
+  top: -60px;
+  width: 100%;
 }
