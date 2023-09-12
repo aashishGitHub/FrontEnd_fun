@@ -34,7 +34,7 @@ body {
     overflow: hidden;
 }
 
-.outer-clock-face::after {
+/* .outer-clock-face::after {
     transform: rotate(90deg)
 }
 
@@ -94,7 +94,7 @@ body {
 .outer-clock-face .marking-number.p9 {
     left: 2%;
     top: calc(50% - 15px);
-}
+} */
 
 .inner-clock-face {
     position: absolute;
@@ -147,6 +147,6 @@ body {
 
 .hand.second-hand {
     height: 3px;
-    background: #ff5e5e;
+    background: #200914;
     width: 40%;
 }
