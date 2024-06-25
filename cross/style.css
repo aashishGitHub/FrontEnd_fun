@@ -21,3 +21,15 @@
     left: 50%;    
     transform: rotate(45deg);
 }
+
+.my-element {
+    will-change: filter;
+    filter: grayscale(100%);
+    transition: filter 0.5s ease-in-out;
+   
+  }
+  
+  .my-element:hover {
+    filter: grayscale(0%);
+    color: blueviolet;
+  }
