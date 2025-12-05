@@ -17,7 +17,8 @@ body > h2 {
   position: absolute;
   border-top: 5px solid rgba(2, 19, 2, 0.5);
   top: 30px;
-  height: 100vh;
+  /* height: 100vh; */
+  /* so that the header takes the whole width of the screen */
   width: 100vw;
 }
 .header ul {
