@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 5: Advanced grid-template-areas Patterns</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .exercise h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #75715e;
+        }
+
+        .code-block .property {
+            color: #a6e22e;
+        }
+
+        .code-block .value {
+            color: #ae81ff;
+        }
+
+        .code-block .string {
+            color: #e6db74;
+        }
+
+        /* ============================================
+           EXERCISE 5.1: Overlapping Areas
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Areas can overlap! This means TWO DIFFERENT named areas
+         * can occupy the SAME grid cells. This is different from regular areas
+         * where each cell belongs to only one area.
+         * 
+         * HOW IT WORKS: When you assign multiple elements to areas that share
+         * the same grid cells, they will LAYER on top of each other (like stacking).
+         * Use z-index to control which one appears on top!
+         * 
+         * REAL-WORLD: Hero sections with text overlaying images, cards over backgrounds
+         */
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 200px 200px;
+            /* 
+             * NOTE: This is NOT true overlapping - these are separate areas!
+             * Row 1: "image image" - image spans both columns (cells 1,1 and 1,2)
+             * Row 2: "overlay content" - overlay in cell 2,1, content in cell 2,2
+             * 
+             * They are in DIFFERENT rows, so they don't actually overlap.
+             * This is just a visual layout example.
+             * 
+             * For TRUE overlapping, see grid-1c below where both elements
+             * use the SAME area name!
+             */
+            grid-template-areas:
+                "image image"
+                "overlay content";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #667eea;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .grid-1 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-1 .image {
+            grid-area: image;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            /* Image spans row 1, both columns */
+        }
+
+        .grid-1 .overlay {
+            grid-area: overlay;
+            background: rgba(102, 126, 234, 0.8);
+            z-index: 2; /* This makes overlay appear ON TOP of image */
+            /* Overlay is in row 2, column 1 - but visually overlaps with image! */
+        }
+
+        .grid-1 .content {
+            grid-area: content;
+            background: #48bb78;
+        }
+
+        /* BETTER EXAMPLE: True Overlapping */
+        .grid-1b {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 200px;
+            /* 
+             * TRUE OVERLAP: Both "background" and "text" occupy the SAME cells!
+             * They will layer on top of each other.
+             */
+            grid-template-areas:
+                "background text";
+            gap: 0; /* No gap for true overlap */
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #667eea;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .grid-1b > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-1b .background {
+            grid-area: background;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1; /* Behind */
+        }
+
+        .grid-1b .text {
+            grid-area: text;
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            z-index: 2; /* On top */
+            /* This text area overlaps with background area! */
+        }
+
+        /* EVEN BETTER: Complete Overlap Example */
+        .grid-1c {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 300px;
+            /* 
+             * COMPLETE OVERLAP: Both areas occupy ALL the same cells!
+             * "hero" and "overlay-text" are in the EXACT same position
+             */
+            grid-template-areas:
+                "hero";
+            gap: 0;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #667eea;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .grid-1c > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-1c .hero-image {
+            grid-area: hero;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 1;
+            color: white;
+        }
+
+        .grid-1c .overlay-text {
+            grid-area: hero; /* SAME AREA as hero-image! */
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            z-index: 2; /* Appears ON TOP */
+            /* This is TRUE overlapping - both use the same area! */
+        }
+
+        /* ============================================
+           EXERCISE 5.2: Asymmetric Magazine Layout
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Real magazine layouts are asymmetric.
+         * Use named areas to create visual interest and hierarchy.
+         */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            /* 
+             * Complex magazine-style layout:
+             * - Feature article spans 2x2
+             * - Multiple smaller articles
+             * - Sidebar spans 2 rows
+             */
+            grid-template-areas:
+                "feature feature article1 sidebar"
+                "feature feature article2 sidebar"
+                "article3 article4 article5 sidebar";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #48bb78;
+            margin: 20px 0;
+        }
+
+        .grid-2 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .grid-2 .feature {
+            grid-area: feature;
+            background: #48bb78;
+            min-height: 250px;
+        }
+
+        .grid-2 .article1 { grid-area: article1; background: #38a169; }
+        .grid-2 .article2 { grid-area: article2; background: #2f855a; }
+        .grid-2 .article3 { grid-area: article3; background: #276749; }
+        .grid-2 .article4 { grid-area: article4; background: #22543d; }
+        .grid-2 .article5 { grid-area: article5; background: #1a202c; }
+        .grid-2 .sidebar {
+            grid-area: sidebar;
+            background: #68d391;
+            min-height: 250px;
+        }
+
+        /* ============================================
+           EXERCISE 5.3: Dashboard Layout
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Dashboards need many widgets in a grid.
+         * Named areas make it easy to organize complex layouts.
+         */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 250px 1fr 1fr;
+            grid-template-rows: 60px auto auto auto;
+            /* 
+             * Dashboard structure:
+             * - Header and sidebar span full height
+             * - Multiple widget areas
+             */
+            grid-template-areas:
+                "header header header"
+                "sidebar widget1 widget2"
+                "sidebar widget3 widget4"
+                "sidebar widget5 widget6";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #ed8936;
+            margin: 20px 0;
+        }
+
+        .grid-3 > div {
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-3 .header {
+            grid-area: header;
+            background: #ed8936;
+        }
+
+        .grid-3 .sidebar {
+            grid-area: sidebar;
+            background: #dd6b20;
+            min-height: 400px;
+        }
+
+        .grid-3 .widget1 { grid-area: widget1; background: #f6ad55; }
+        .grid-3 .widget2 { grid-area: widget2; background: #ed8936; }
+        .grid-3 .widget3 { grid-area: widget3; background: #dd6b20; }
+        .grid-3 .widget4 { grid-area: widget4; background: #c05621; }
+        .grid-3 .widget5 { grid-area: widget5; background: #9c4221; }
+        .grid-3 .widget6 { grid-area: widget6; background: #7c2d12; }
+
+        /* ============================================
+           EXERCISE 5.4: Card Grid with Named Areas
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Even simple card grids can use named areas
+         * for better organization and easier responsive changes.
+         */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, auto);
+            /* 
+             * 3x3 card grid - each card has a name
+             * Makes it easy to rearrange or style individually
+             */
+            grid-template-areas:
+                "card1 card2 card3"
+                "card4 card5 card6"
+                "card7 card8 card9";
+            gap: 15px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #9f7aea;
+            margin: 20px 0;
+        }
+
+        .grid-4 > div {
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: bold;
+            color: white;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .grid-4 .card1 { grid-area: card1; background: linear-gradient(135deg, #9f7aea 0%, #667eea 100%); }
+        .grid-4 .card2 { grid-area: card2; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .grid-4 .card3 { grid-area: card3; background: linear-gradient(135deg, #764ba2 0%, #9f7aea 100%); }
+        .grid-4 .card4 { grid-area: card4; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .grid-4 .card5 { grid-area: card5; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .grid-4 .card6 { grid-area: card6; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .grid-4 .card7 { grid-area: card7; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .grid-4 .card8 { grid-area: card8; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+        .grid-4 .card9 { grid-area: card9; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #333; }
+
+        /* ============================================
+           EXERCISE 5.5: Responsive Navigation Layout
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Use media queries to completely rearrange
+         * layouts. Named areas make this transformation seamless.
+         */
+        .grid-5 {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: auto auto auto auto;
+            /* 
+             * Mobile: Everything stacks vertically
+             */
+            grid-template-areas:
+                "header"
+                "nav"
+                "main"
+                "footer";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #4299e1;
+            margin: 20px 0;
+        }
+
+        .grid-5 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-5 .header {
+            grid-area: header;
+            background: #4299e1;
+        }
+
+        .grid-5 .nav {
+            grid-area: nav;
+            background: #3182ce;
+        }
+
+        .grid-5 .main {
+            grid-area: main;
+            background: #2c5282;
+            min-height: 200px;
+        }
+
+        .grid-5 .footer {
+            grid-area: footer;
+            background: #2a4365;
+        }
+
+        /* Tablet: Nav moves to side */
+        @media (min-width: 768px) {
+            .grid-5 {
+                grid-template-columns: 200px 1fr;
+                grid-template-rows: 60px 1fr 40px;
+                grid-template-areas:
+                    "header header"
+                    "nav main"
+                    "footer footer";
+            }
+        }
+
+        /* Desktop: Full layout */
+        @media (min-width: 1024px) {
+            .grid-5 {
+                grid-template-columns: 250px 1fr 200px;
+                grid-template-rows: 70px 1fr 50px;
+                grid-template-areas:
+                    "header header header"
+                    "nav main sidebar"
+                    "footer footer footer";
+            }
+            
+            .grid-5 .sidebar {
+                grid-area: sidebar;
+                background: #1a365d;
+                display: flex;
+            }
+        }
+
+        .grid-5 .sidebar {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .grid-5 .sidebar {
+                display: flex;
+            }
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Exercise 5: Advanced grid-template-areas Patterns</h1>
+
+        <div class="exercise">
+            <h2>5.1 Overlapping Areas</h2>
+            <p><strong>Concept:</strong> Areas can overlap! This means <strong>TWO DIFFERENT elements</strong> can be assigned to areas that share the <strong>SAME grid cells</strong>, creating layered effects.</p>
+            
+            <div class="warning" style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                <strong style="color: #856404;">🔑 Key Understanding:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #856404; line-height: 1.8;">
+                    <li><strong>Regular Areas:</strong> Each cell belongs to ONE area only</li>
+                    <li><strong>Overlapping Areas:</strong> Multiple elements can occupy the SAME cells</li>
+                    <li><strong>How it works:</strong> Assign different elements to the same area name, or use positioning</li>
+                    <li><strong>Visual effect:</strong> Elements layer on top of each other (like stacking cards)</li>
+                    <li><strong>Control:</strong> Use <code>z-index</code> to control which appears on top</li>
+                </ul>
+            </div>
+
+            <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">Example 1: Visual Layout (NOT True Overlap)</h3>
+            <p style="color: #666; margin-bottom: 15px;"><strong>Note:</strong> This example shows a layout, but these areas don't actually overlap - they're in different rows!</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:<br>
+&nbsp;&nbsp;<span class="string">"image image"</span>     <span class="comment">/* Row 1: image in cells (1,1) and (1,2) */</span><br>
+&nbsp;&nbsp;<span class="string">"overlay content"</span>; <span class="comment">/* Row 2: overlay in cell (2,1), content in cell (2,2) */</span><br>
+<span class="comment">/* These are SEPARATE areas in different rows - no overlap! */</span>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; font-family: monospace; font-size: 0.9em;">
+                <strong style="color: #667eea;">📐 Grid Cell Map:</strong>
+                <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; max-width: 400px;">
+                    <div style="background: #667eea; color: white; padding: 15px; text-align: center; border-radius: 5px;">
+                        image<br>(1,1)
+                    </div>
+                    <div style="background: #667eea; color: white; padding: 15px; text-align: center; border-radius: 5px;">
+                        image<br>(1,2)
+                    </div>
+                    <div style="background: rgba(102, 126, 234, 0.8); color: white; padding: 15px; text-align: center; border-radius: 5px;">
+                        overlay<br>(2,1)
+                    </div>
+                    <div style="background: #48bb78; color: white; padding: 15px; text-align: center; border-radius: 5px;">
+                        content<br>(2,2)
+                    </div>
+                </div>
+                <p style="margin-top: 15px; color: #666;">
+                    <strong>See?</strong> Each cell has ONE area. "image" is in row 1, "overlay" is in row 2. They're in <strong>different rows</strong>, so they <strong>don't overlap</strong>!
+                </p>
+            </div>
+
+            <div class="grid-1">
+                <div class="image">Background Image (Row 1, Cols 1-2)</div>
+                <div class="overlay">Overlay (Row 2, Col 1 - separate from image!)</div>
+                <div class="content">Content (Row 2, Col 2)</div>
+            </div>
+            <div class="warning" style="margin-top: 15px;">
+                <strong>⚠️ Important:</strong> This is <strong>NOT true overlapping</strong>! The "image" area is in row 1, and "overlay" is in row 2. They're in different rows, so they don't share the same cells. True overlapping requires elements to use the <strong>SAME area name</strong> (see Example 2 below).
+            </div>
+
+            <h3 style="color: #667eea; margin-top: 30px; margin-bottom: 15px;">Example 2: TRUE Overlapping - Same Area Name</h3>
+            <p><strong>This is REAL overlapping:</strong> Two different elements assigned to the <strong>SAME area name</strong>, so they occupy the <strong>SAME grid cells</strong> and layer on top of each other!</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:<br>
+&nbsp;&nbsp;<span class="string">"hero"</span>; <span class="comment">/* Only ONE area defined */</span><br><br>
+<span class="comment">/* But TWO elements use the same area! */</span><br>
+.hero-image { <span class="property">grid-area</span>: <span class="value">hero</span>; }<br>
+.overlay-text { <span class="property">grid-area</span>: <span class="value">hero</span>; } <span class="comment">/* SAME area! */</span>
+            </div>
+            <div class="grid-1c">
+                <div class="hero-image">Hero Background Image</div>
+                <div class="overlay-text">Text Overlay (same area, on top!)</div>
+            </div>
+
+            <div class="info" style="margin-top: 20px;">
+                <strong>💡 How Overlapping Works:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Step 1:</strong> Define areas in <code>grid-template-areas</code></li>
+                    <li><strong>Step 2:</strong> Assign multiple elements to the same area using <code>grid-area: name</code></li>
+                    <li><strong>Step 3:</strong> Elements will occupy the SAME grid cells</li>
+                    <li><strong>Step 4:</strong> They layer on top of each other (like stacking)</li>
+                    <li><strong>Step 5:</strong> Use <code>z-index</code> to control which appears on top</li>
+                </ul>
+            </div>
+
+            <div class="note" style="margin-top: 20px;">
+                <strong>📊 Visual Comparison:</strong>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 15px; background: white;">
+                    <thead>
+                        <tr style="background: #667eea; color: white;">
+                            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Regular Areas</th>
+                            <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Overlapping Areas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Each cell = ONE area</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Multiple elements = SAME cells</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td style="padding: 12px; border: 1px solid #ddd;">Elements don't layer</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Elements layer (stack)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border: 1px solid #ddd;">No z-index needed</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">z-index controls order</td>
+                        </tr>
+                        <tr style="background: #f8f9fa;">
+                            <td style="padding: 12px; border: 1px solid #ddd;">Example: "header sidebar"</td>
+                            <td style="padding: 12px; border: 1px solid #ddd;">Example: Both use "hero"</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="info" style="margin-top: 20px;">
+                <strong>🌐 Real-World Use Cases:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Hero Sections:</strong> Background image + text overlay</li>
+                    <li><strong>Cards:</strong> Image background + content on top</li>
+                    <li><strong>Modals:</strong> Backdrop + modal content</li>
+                    <li><strong>Banners:</strong> Background + text/buttons</li>
+                    <li><strong>Image Galleries:</strong> Image + hover overlay</li>
+                </ul>
+            </div>
+
+            <div class="warning" style="margin-top: 20px;">
+                <strong>⚠️ Important: Regular Areas vs Overlapping Areas</strong>
+                <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                        <strong style="color: #721c24;">Regular Areas (No Overlap):</strong>
+                        <div class="code-block" style="margin-top: 10px; font-size: 12px;">
+<span class="string">"header header"</span><br>
+<span class="string">"sidebar content"</span>
+                        </div>
+                        <p style="margin-top: 10px; color: #721c24; font-size: 0.9em;">
+                            Each cell belongs to ONE area:<br>
+                            • Cell (1,1) = header<br>
+                            • Cell (1,2) = header<br>
+                            • Cell (2,1) = sidebar<br>
+                            • Cell (2,2) = content<br><br>
+                            <strong>No overlap!</strong>
+                        </p>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+                        <strong style="color: #721c24;">Overlapping Areas:</strong>
+                        <div class="code-block" style="margin-top: 10px; font-size: 12px;">
+<span class="string">"hero"</span><br><br>
+<span class="comment">/* Two elements use same area */</span><br>
+.image { <span class="property">grid-area</span>: <span class="value">hero</span>; }<br>
+.text { <span class="property">grid-area</span>: <span class="value">hero</span>; }
+                        </div>
+                        <p style="margin-top: 10px; color: #721c24; font-size: 0.9em;">
+                            BOTH elements occupy the SAME cell:<br>
+                            • Image uses "hero" area<br>
+                            • Text ALSO uses "hero" area<br>
+                            • They LAYER on top of each other!<br><br>
+                            <strong>True overlap!</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>5.2 Asymmetric Magazine Layout</h2>
+            <p><strong>Concept:</strong> Real-world layouts are rarely symmetric. Use named areas to create visual hierarchy and interest.</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:
+    <span class="string">"feature feature article1 sidebar"</span>
+    <span class="string">"feature feature article2 sidebar"</span>
+    <span class="string">"article3 article4 article5 sidebar"</span>;
+<span class="comment">/* Feature spans 2x2, sidebar spans 3 rows */</span>
+            </div>
+            <div class="grid-2">
+                <div class="feature">Feature Article (2x2)</div>
+                <div class="article1">Article 1</div>
+                <div class="article2">Article 2</div>
+                <div class="article3">Article 3</div>
+                <div class="article4">Article 4</div>
+                <div class="article5">Article 5</div>
+                <div class="sidebar">Sidebar (spans 3 rows)</div>
+            </div>
+            <div class="note">
+                <strong>📰 Real-World:</strong> This pattern is used by news sites, blogs, and magazine-style layouts. The feature article gets prominence, while smaller articles fill the space.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>5.3 Dashboard Layout</h2>
+            <p><strong>Concept:</strong> Dashboards need many widgets organized in a grid. Named areas make complex layouts manageable.</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:
+    <span class="string">"header header header"</span>
+    <span class="string">"sidebar widget1 widget2"</span>
+    <span class="string">"sidebar widget3 widget4"</span>
+    <span class="string">"sidebar widget5 widget6"</span>;
+<span class="comment">/* Sidebar spans 3 rows, widgets in 2 columns */</span>
+            </div>
+            <div class="grid-3">
+                <div class="header">Dashboard Header</div>
+                <div class="sidebar">Navigation Sidebar</div>
+                <div class="widget1">Widget 1</div>
+                <div class="widget2">Widget 2</div>
+                <div class="widget3">Widget 3</div>
+                <div class="widget4">Widget 4</div>
+                <div class="widget5">Widget 5</div>
+                <div class="widget6">Widget 6</div>
+            </div>
+            <div class="info">
+                <strong>🎛️ Dashboard Pattern:</strong> This is exactly how admin panels, analytics dashboards, and control panels are structured. Each widget can be individually styled or repositioned easily.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>5.4 Card Grid with Named Areas</h2>
+            <p><strong>Concept:</strong> Even simple grids benefit from named areas. It makes each card individually addressable and easier to rearrange.</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:
+    <span class="string">"card1 card2 card3"</span>
+    <span class="string">"card4 card5 card6"</span>
+    <span class="string">"card7 card8 card9"</span>;
+<span class="comment">/* Each card has a unique name */</span>
+            </div>
+            <div class="grid-4">
+                <div class="card1">Card 1</div>
+                <div class="card2">Card 2</div>
+                <div class="card3">Card 3</div>
+                <div class="card4">Card 4</div>
+                <div class="card5">Card 5</div>
+                <div class="card6">Card 6</div>
+                <div class="card7">Card 7</div>
+                <div class="card8">Card 8</div>
+                <div class="card9">Card 9</div>
+            </div>
+            <div class="note">
+                <strong>💡 Advantage:</strong> With named areas, you can easily rearrange cards (e.g., swap card1 and card5) or style them individually without touching HTML order.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>5.5 Fully Responsive Navigation Layout</h2>
+            <p><strong>Concept:</strong> The ultimate power of named areas: completely transform layouts at different breakpoints with just string changes!</p>
+            <div class="code-block">
+<span class="comment">/* Mobile: Stack everything */</span>
+<span class="property">grid-template-areas</span>:
+    <span class="string">"header"</span>
+    <span class="string">"nav"</span>
+    <span class="string">"main"</span>
+    <span class="string">"footer"</span>;
+
+<span class="comment">/* Tablet: Nav to side */</span>
+<span class="property">@media</span> (<span class="property">min-width</span>: <span class="value">768px</span>) {
+    <span class="property">grid-template-areas</span>:
+        <span class="string">"header header"</span>
+        <span class="string">"nav main"</span>
+        <span class="string">"footer footer"</span>;
+}
+
+<span class="comment">/* Desktop: Add sidebar */</span>
+<span class="property">@media</span> (<span class="property">min-width</span>: <span class="value">1024px</span>) {
+    <span class="property">grid-template-areas</span>:
+        <span class="string">"header header header"</span>
+        <span class="string">"nav main sidebar"</span>
+        <span class="string">"footer footer footer"</span>;
+}
+            </div>
+            <div class="grid-5">
+                <div class="header">Header</div>
+                <div class="nav">Navigation</div>
+                <div class="main">Main Content</div>
+                <div class="footer">Footer</div>
+                <div class="sidebar">Sidebar (desktop only)</div>
+            </div>
+            <div class="info">
+                <strong>🔄 Try This:</strong> Resize your browser! Watch how the layout completely transforms:
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460;">
+                    <li><strong>Mobile:</strong> Everything stacks vertically</li>
+                    <li><strong>Tablet:</strong> Nav moves to left sidebar</li>
+                    <li><strong>Desktop:</strong> Sidebar appears on right</li>
+                </ul>
+                All with just changing the grid-template-areas strings!
+            </div>
+        </div>
+
+        <div class="exercise" style="background: #e6fffa; border: 2px solid #38b2ac;">
+            <h2 style="color: #2c7a7b;">🎓 Practice Challenge</h2>
+            <p><strong>Your Turn:</strong> Master these advanced patterns:</p>
+            <ul style="color: #555; line-height: 2;">
+                <li><strong>E-commerce:</strong> Create a product page with "header header header" | "images details sidebar" | "reviews reviews sidebar" | "footer footer footer"</li>
+                <li><strong>Portfolio:</strong> Create an asymmetric grid with a large featured project and smaller thumbnails</li>
+                <li><strong>Admin Panel:</strong> Build a dashboard with sidebar, header, and 6 widget areas</li>
+                <li><strong>Responsive Blog:</strong> Mobile stacks, tablet has sidebar, desktop adds second sidebar</li>
+                <li><strong>Experiment:</strong> Try overlapping areas to create layered effects</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
