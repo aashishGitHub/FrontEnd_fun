@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 4: grid-template-areas Introduction</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .exercise h2 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #f5576c;
+            padding-bottom: 10px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #75715e;
+        }
+
+        .code-block .property {
+            color: #a6e22e;
+        }
+
+        .code-block .value {
+            color: #ae81ff;
+        }
+
+        .code-block .string {
+            color: #e6db74;
+        }
+
+        /* ============================================
+           EXERCISE 4.1: Basic Named Areas
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: grid-template-areas lets you NAME your grid cells
+         * and create a visual map of your layout using strings.
+         * Each string = one row, each word = one column.
+         * 
+         * This is like drawing your layout on paper!
+         */
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            /* 
+             * Visual representation:
+             * "header header"  = Row 1: header spans 2 columns
+             * "sidebar content" = Row 2: sidebar in col1, content in col2
+             */
+            grid-template-areas:
+                "header header"
+                "sidebar content";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #f5576c;
+            margin: 20px 0;
+        }
+
+        .grid-1 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .grid-1 .header {
+            grid-area: header; /* Assigns this div to the "header" area */
+            background: #f5576c;
+        }
+
+        .grid-1 .sidebar {
+            grid-area: sidebar; /* Assigns this div to the "sidebar" area */
+            background: #4facfe;
+        }
+
+        .grid-1 .content {
+            grid-area: content; /* Assigns this div to the "content" area */
+            background: #43e97b;
+        }
+
+        /* ============================================
+           EXERCISE 4.2: Empty Cells with Dots
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Use "." (dot) to create empty cells.
+         * Multiple dots (".", "..", "...") are all the same - 
+         * they just represent empty space.
+         */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto;
+            /* 
+             * "." = empty cell
+             * "header header header" = header spans all 3 columns
+             * ". content ." = content in middle, empty on sides
+             */
+            grid-template-areas:
+                "header header header"
+                ". content .";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #48bb78;
+            margin: 20px 0;
+        }
+
+        .grid-2 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .grid-2 .header {
+            grid-area: header;
+            background: #48bb78;
+        }
+
+        .grid-2 .content {
+            grid-area: content;
+            background: #38a169;
+        }
+
+        /* ============================================
+           EXERCISE 4.3: Classic Website Layout
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: This is the most common layout pattern!
+         * Header at top, footer at bottom, sidebar and content in middle.
+         * Notice how areas can span multiple columns/rows.
+         */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            grid-template-rows: 60px 1fr 40px;
+            /* 
+             * Classic layout structure:
+             * Row 1: header spans both columns
+             * Row 2: sidebar in col1, content in col2
+             * Row 3: footer spans both columns
+             */
+            grid-template-areas:
+                "header header"
+                "sidebar content"
+                "footer footer";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #ed8936;
+            margin: 20px 0;
+            height: 400px;
+        }
+
+        .grid-3 > div {
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-3 .header {
+            grid-area: header;
+            background: #ed8936;
+        }
+
+        .grid-3 .sidebar {
+            grid-area: sidebar;
+            background: #dd6b20;
+        }
+
+        .grid-3 .content {
+            grid-area: content;
+            background: #f6ad55;
+        }
+
+        .grid-3 .footer {
+            grid-area: footer;
+            background: #c05621;
+        }
+
+        /* ============================================
+           EXERCISE 4.4: Complex Area Layout
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Areas can have any names you want!
+         * Use descriptive names that match your content.
+         * This creates a more complex magazine-style layout.
+         */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto;
+            /* 
+             * Complex layout with named areas:
+             * Row 1: nav spans all
+             * Row 2: article1, article2, sidebar
+             * Row 3: article3 spans 2 cols, sidebar continues
+             */
+            grid-template-areas:
+                "nav nav nav"
+                "article1 article2 sidebar"
+                "article3 article3 sidebar";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #9f7aea;
+            margin: 20px 0;
+        }
+
+        .grid-4 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-4 .nav {
+            grid-area: nav;
+            background: #9f7aea;
+        }
+
+        .grid-4 .article1 {
+            grid-area: article1;
+            background: #805ad5;
+        }
+
+        .grid-4 .article2 {
+            grid-area: article2;
+            background: #6b46c1;
+        }
+
+        .grid-4 .article3 {
+            grid-area: article3;
+            background: #553c9a;
+        }
+
+        .grid-4 .sidebar {
+            grid-area: sidebar;
+            background: #44337a;
+        }
+
+        /* ============================================
+           EXERCISE 4.5: Responsive Areas Pattern
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: You can rearrange layouts easily!
+         * Just change the grid-template-areas string.
+         * This is why named areas are so powerful for responsive design.
+         */
+        .grid-5 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto auto auto auto;
+            /* 
+             * Mobile-first: stack everything vertically
+             * Each area gets its own row
+             */
+            grid-template-areas:
+                "header header header"
+                "sidebar sidebar sidebar"
+                "content content content"
+                "footer footer footer";
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #4299e1;
+            margin: 20px 0;
+        }
+
+        .grid-5 > div {
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            color: white;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-5 .header {
+            grid-area: header;
+            background: #4299e1;
+        }
+
+        .grid-5 .sidebar {
+            grid-area: sidebar;
+            background: #3182ce;
+        }
+
+        .grid-5 .content {
+            grid-area: content;
+            background: #2c5282;
+        }
+
+        .grid-5 .footer {
+            grid-area: footer;
+            background: #2a4365;
+        }
+
+        /* Desktop layout - rearrange areas */
+        @media (min-width: 768px) {
+            .grid-5 {
+                grid-template-areas:
+                    "header header header"
+                    "sidebar content content"
+                    "sidebar content content"
+                    "footer footer footer";
+            }
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #0c5460;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Exercise 4: grid-template-areas Introduction</h1>
+
+        <div class="exercise">
+            <h2>4.1 Basic Named Areas</h2>
+            <p><strong>Concept:</strong> `grid-template-areas` lets you create a visual map of your layout using named areas. This is like drawing your layout!</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:
+    <span class="string">"header header"</span>     <span class="comment">/* Row 1: header spans 2 columns */</span>
+    <span class="string">"sidebar content"</span>;  <span class="comment">/* Row 2: sidebar | content */</span>
+
+<span class="comment">/* Then assign elements to areas: */</span>
+.header { <span class="property">grid-area</span>: <span class="value">header</span>; }
+.sidebar { <span class="property">grid-area</span>: <span class="value">sidebar</span>; }
+.content { <span class="property">grid-area</span>: <span class="value">content</span>; }
+            </div>
+            <div class="grid-1">
+                <div class="header">Header</div>
+                <div class="sidebar">Sidebar</div>
+                <div class="content">Content</div>
+            </div>
+            <div class="info">
+                <strong>📐 How It Works:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460;">
+                    <li>Each string in quotes = one row</li>
+                    <li>Each word in the string = one column</li>
+                    <li>Same name repeated = that area spans multiple columns/rows</li>
+                    <li>Use `grid-area: name` to assign elements to areas</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>4.2 Empty Cells with Dots (.)</h2>
+            <p><strong>Concept:</strong> Use "." (dot) to create empty cells. This lets you center content or create gaps in your layout.</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:
+    <span class="string">"header header header"</span>  <span class="comment">/* Header spans all 3 columns */</span>
+    <span class="string">". content ."</span>;          <span class="comment">/* Content in middle, empty on sides */</span>
+            </div>
+            <div class="grid-2">
+                <div class="header">Header (spans all)</div>
+                <div class="content">Content (centered)</div>
+            </div>
+            <div class="note">
+                <strong>💡 Pro Tip:</strong> The dots create empty cells. You can use ".", "..", or "..." - they all mean the same thing (empty cell). This is useful for centering content!
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>4.3 Classic Website Layout</h2>
+            <p><strong>Concept:</strong> This is the most common layout pattern! Header, sidebar, content, and footer - all defined with named areas.</p>
+            <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">200px 1fr</span>; <span class="comment">/* Sidebar | Content */</span>
+<span class="property">grid-template-rows</span>: <span class="value">60px 1fr 40px</span>; <span class="comment">/* Header | Main | Footer */</span>
+<span class="property">grid-template-areas</span>:
+    <span class="string">"header header"</span>      <span class="comment">/* Header spans both columns */</span>
+    <span class="string">"sidebar content"</span>    <span class="comment">/* Sidebar | Content */</span>
+    <span class="string">"footer footer"</span>;     <span class="comment">/* Footer spans both columns */</span>
+            </div>
+            <div class="grid-3">
+                <div class="header">Header</div>
+                <div class="sidebar">Sidebar</div>
+                <div class="content">Main Content</div>
+                <div class="footer">Footer</div>
+            </div>
+            <div class="info">
+                <strong>🌐 Real-World Use:</strong> This exact pattern is used by millions of websites! The beauty of named areas is that you can rearrange the layout just by changing the strings - no need to recalculate grid positions.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>4.4 Complex Area Layout</h2>
+            <p><strong>Concept:</strong> Use descriptive names for your areas. This makes your CSS self-documenting and easier to understand.</p>
+            <div class="code-block">
+<span class="property">grid-template-areas</span>:
+    <span class="string">"nav nav nav"</span>                    <span class="comment">/* Navigation spans all */</span>
+    <span class="string">"article1 article2 sidebar"</span>      <span class="comment">/* Three columns */</span>
+    <span class="string">"article3 article3 sidebar"</span>;     <span class="comment">/* Article3 spans 2 cols */</span>
+            </div>
+            <div class="grid-4">
+                <div class="nav">Navigation</div>
+                <div class="article1">Article 1</div>
+                <div class="article2">Article 2</div>
+                <div class="article3">Article 3 (spans 2 columns)</div>
+                <div class="sidebar">Sidebar</div>
+            </div>
+            <div class="note">
+                <strong>💡 Mental Model:</strong> Notice how "article3" appears twice in the last row? That makes it span 2 columns. The "sidebar" appears in both row 2 and row 3, so it spans 2 rows automatically!
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>4.5 Responsive Areas Pattern</h2>
+            <p><strong>Concept:</strong> The power of named areas shines in responsive design! Just rearrange the strings in media queries.</p>
+            <div class="code-block">
+<span class="comment">/* Mobile: stack everything */</span>
+<span class="property">grid-template-areas</span>:
+    <span class="string">"header header header"</span>
+    <span class="string">"sidebar sidebar sidebar"</span>
+    <span class="string">"content content content"</span>
+    <span class="string">"footer footer footer"</span>;
+
+<span class="comment">/* Desktop: rearrange with media query */</span>
+<span class="property">@media</span> (<span class="property">min-width</span>: <span class="value">768px</span>) {
+    <span class="property">grid-template-areas</span>:
+        <span class="string">"header header header"</span>
+        <span class="string">"sidebar content content"</span>
+        <span class="string">"sidebar content content"</span>
+        <span class="string">"footer footer footer"</span>;
+}
+            </div>
+            <div class="grid-5">
+                <div class="header">Header</div>
+                <div class="sidebar">Sidebar</div>
+                <div class="content">Content</div>
+                <div class="footer">Footer</div>
+            </div>
+            <div class="warning">
+                <strong>🔄 Try This:</strong> Resize your browser window! On mobile (narrow), everything stacks. On desktop (wide), the sidebar moves to the left. This is responsive design made easy!
+            </div>
+            <div class="info">
+                <strong>🎯 Key Advantage:</strong> With named areas, you don't need to recalculate grid positions. Just rearrange the strings! This is much easier than using grid-column and grid-row.
+            </div>
+        </div>
+
+        <div class="exercise" style="background: #e6fffa; border: 2px solid #38b2ac;">
+            <h2 style="color: #2c7a7b;">🎓 Practice Challenge</h2>
+            <p><strong>Your Turn:</strong> Create these layouts using grid-template-areas:</p>
+            <ul style="color: #555; line-height: 2;">
+                <li><strong>3-Column Blog:</strong> "header header header" | "nav nav nav" | "article1 article2 sidebar" | "footer footer footer"</li>
+                <li><strong>Centered Content:</strong> ". . ." | ". content ." | ". . ." (content in center, empty around)</li>
+                <li><strong>Dashboard:</strong> "header header header" | "sidebar main main" | "sidebar widget1 widget2" | "footer footer footer"</li>
+                <li><strong>Magazine:</strong> "header header header" | "feature feature sidebar" | "article1 article2 sidebar" | "footer footer footer"</li>
+                <li><strong>Try rearranging:</strong> Take any layout and rearrange the areas - see how easy it is!</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
