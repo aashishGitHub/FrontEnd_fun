@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2: grid-template-rows Basics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .exercise h2 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #f5576c;
+            padding-bottom: 10px;
+        }
+
+        .exercise p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .code-block .comment {
+            color: #75715e;
+        }
+
+        .code-block .property {
+            color: #a6e22e;
+        }
+
+        .code-block .value {
+            color: #ae81ff;
+        }
+
+        /* ============================================
+           EXERCISE 2.1: Fixed Height Rows
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: grid-template-rows works exactly like columns,
+         * but vertically! It defines the height of each row.
+         */
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr; /* 3 columns */
+            grid-template-rows: 100px 150px 100px; /* 3 rows with specific heights */
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #f5576c;
+            margin: 20px 0;
+        }
+
+        .grid-1 > div {
+            background: #f5576c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================
+           EXERCISE 2.2: Fractional Rows
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Use 'fr' units to divide vertical space.
+         * Perfect for layouts where you want certain sections
+         * to take more or less vertical space.
+         */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Header small, content large, footer small */
+            grid-template-rows: 80px 1fr 60px;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #4facfe;
+            margin: 20px 0;
+            height: 400px; /* Container needs a height for fr to work */
+        }
+
+        .grid-2 > div {
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-2 > div:nth-child(1) {
+            background: #4facfe;
+            grid-column: 1 / -1; /* Spans all columns */
+        }
+
+        .grid-2 > div:nth-child(2),
+        .grid-2 > div:nth-child(3) {
+            background: #00f2fe;
+        }
+
+        .grid-2 > div:nth-child(4) {
+            background: #4facfe;
+            grid-column: 1 / -1; /* Spans all columns */
+        }
+
+        /* ============================================
+           EXERCISE 2.3: Auto Rows
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: 'auto' means "size based on content".
+         * The row will be as tall as its tallest item.
+         * 
+         * REAL-WORLD: Perfect for content that varies in height.
+         */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto auto; /* Rows size to content */
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #43e97b;
+            margin: 20px 0;
+        }
+
+        .grid-3 > div {
+            background: #43e97b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .grid-3 > div:nth-child(2) {
+            padding: 40px 20px; /* Taller content */
+        }
+
+        .grid-3 > div:nth-child(5) {
+            padding: 60px 20px; /* Even taller */
+        }
+
+        /* ============================================
+           EXERCISE 2.4: Minmax for Rows
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: minmax() ensures rows have a minimum height
+         * but can grow if content needs more space.
+         * 
+         * REAL-WORLD: Prevents rows from being too small,
+         * but allows flexibility for content.
+         */
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Minimum 100px, but can grow */
+            grid-template-rows: minmax(100px, auto) minmax(150px, 1fr) minmax(80px, auto);
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #fa709a;
+            margin: 20px 0;
+            height: 500px;
+        }
+
+        .grid-4 > div {
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-4 > div:nth-child(1) {
+            background: #fa709a;
+            grid-column: 1 / -1;
+        }
+
+        .grid-4 > div:nth-child(2),
+        .grid-4 > div:nth-child(3) {
+            background: #fee140;
+        }
+
+        .grid-4 > div:nth-child(4) {
+            background: #fa709a;
+            grid-column: 1 / -1;
+        }
+
+        /* ============================================
+           EXERCISE 2.5: Repeat with Rows
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Use repeat() for rows just like columns.
+         * Creates consistent row heights across the grid.
+         */
+        .grid-5 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* 3 rows, each 120px tall */
+            grid-template-rows: repeat(3, 120px);
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #30cfd0;
+            margin: 20px 0;
+        }
+
+        .grid-5 > div {
+            background: #30cfd0;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ============================================
+           EXERCISE 2.6: Real-World Layout - Dashboard
+           ============================================ */
+        
+        /* 
+         * MENTAL MODEL: Combine everything for a real dashboard layout.
+         * Header (fixed), Sidebar + Content (flexible), Footer (fixed)
+         */
+        .grid-6 {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            /* Header: 60px, Main area: flexible, Footer: 40px */
+            grid-template-rows: 60px 1fr 40px;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border: 2px solid #a8edea;
+            margin: 20px 0;
+            height: 500px;
+        }
+
+        .grid-6 > div {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-6 > div:nth-child(1) {
+            background: #667eea;
+            grid-column: 1 / -1; /* Header spans all */
+        }
+
+        .grid-6 > div:nth-child(2) {
+            background: #764ba2;
+        }
+
+        .grid-6 > div:nth-child(3) {
+            background: #f093fb;
+        }
+
+        .grid-6 > div:nth-child(4) {
+            background: #667eea;
+            grid-column: 1 / -1; /* Footer spans all */
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Exercise 2: grid-template-rows Mastery</h1>
+
+        <div class="exercise">
+            <h2>2.1 Fixed Height Rows</h2>
+            <p><strong>Concept:</strong> Define exact pixel heights for each row, just like we did with columns.</p>
+            <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">1fr 1fr 1fr</span>; <span class="comment">/* 3 equal columns */</span>
+<span class="property">grid-template-rows</span>: <span class="value">100px 150px 100px</span>; <span class="comment">/* 3 rows: 100px, 150px, 100px */</span>
+            </div>
+            <div class="grid-1">
+                <div>Row 1 (100px)</div>
+                <div>Row 1</div>
+                <div>Row 1</div>
+                <div>Row 2 (150px)</div>
+                <div>Row 2</div>
+                <div>Row 2</div>
+                <div>Row 3 (100px)</div>
+                <div>Row 3</div>
+                <div>Row 3</div>
+            </div>
+            <div class="note">
+                <strong>💡 Key Takeaway:</strong> Notice how each row has a fixed height. Items in the same row will all be that height.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.2 Fractional Rows (fr units)</h2>
+            <p><strong>Concept:</strong> Use 'fr' units to divide vertical space proportionally. Perfect for header/content/footer layouts!</p>
+            <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">80px 1fr 60px</span>; <span class="comment">/* Header | Flexible Content | Footer */</span>
+            </div>
+            <div class="grid-2">
+                <div>Header (80px fixed)</div>
+                <div>Content Area (takes remaining space)</div>
+                <div>Sidebar</div>
+                <div>Footer (60px fixed)</div>
+            </div>
+            <div class="warning">
+                <strong>⚠️ Important:</strong> For 'fr' units to work with rows, the container needs a defined height! Otherwise, rows will size to content.
+            </div>
+            <div class="note">
+                <strong>💡 Real-World Use:</strong> This is the classic website layout: fixed header, flexible content area, fixed footer.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.3 Auto Rows (Content-Based Sizing)</h2>
+            <p><strong>Concept:</strong> 'auto' makes rows size based on their content. Each row will be as tall as its tallest item.</p>
+            <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">auto auto auto</span>; <span class="comment">/* Rows size to content */</span>
+            </div>
+            <div class="grid-3">
+                <div>Row 1<br>Normal height</div>
+                <div>Row 1<br>Taller content<br>More lines</div>
+                <div>Row 1</div>
+                <div>Row 2</div>
+                <div>Row 2<br>Even taller<br>Lots of content<br>Many lines</div>
+                <div>Row 2</div>
+                <div>Row 3</div>
+                <div>Row 3</div>
+                <div>Row 3</div>
+            </div>
+            <div class="note">
+                <strong>💡 Mental Model:</strong> 'auto' is like saying "be as tall as you need to be". Notice how Row 1 and Row 2 are different heights based on their content!
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.4 Minmax for Rows</h2>
+            <p><strong>Concept:</strong> minmax() ensures rows have a minimum height but can grow if needed. Best of both worlds!</p>
+            <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">minmax(100px, auto) minmax(150px, 1fr) minmax(80px, auto)</span>;
+<span class="comment">/* Min height, but can grow */</span>
+            </div>
+            <div class="grid-4">
+                <div>Header (min 100px, grows if needed)</div>
+                <div>Content (min 150px, takes remaining space)</div>
+                <div>Sidebar</div>
+                <div>Footer (min 80px, grows if needed)</div>
+            </div>
+            <div class="note">
+                <strong>💡 Pro Tip:</strong> minmax(100px, auto) = "At least 100px, but grow for content". minmax(100px, 1fr) = "At least 100px, but share remaining space".
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.5 Repeat() with Rows</h2>
+            <p><strong>Concept:</strong> Use repeat() to create multiple rows with the same height. Keeps your code DRY (Don't Repeat Yourself).</p>
+            <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">repeat(3, 120px)</span>; <span class="comment">/* Same as: 120px 120px 120px */</span>
+            </div>
+            <div class="grid-5">
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+            </div>
+            <div class="note">
+                <strong>💡 Use Case:</strong> Perfect for creating uniform card grids or data tables where all rows should be the same height.
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.6 Real-World Layout: Dashboard</h2>
+            <p><strong>Concept:</strong> Combine fixed and flexible rows to create a complete dashboard layout.</p>
+            <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">200px 1fr</span>; <span class="comment">/* Sidebar | Main */</span>
+<span class="property">grid-template-rows</span>: <span class="value">60px 1fr 40px</span>; <span class="comment">/* Header | Content | Footer */</span>
+            </div>
+            <div class="grid-6">
+                <div>Header (60px)</div>
+                <div>Sidebar (200px)</div>
+                <div>Main Content (flexible)</div>
+                <div>Footer (40px)</div>
+            </div>
+            <div class="note">
+                <strong>💡 Real-World Application:</strong> This is exactly how admin dashboards, content management systems, and web applications are structured!
+            </div>
+        </div>
+
+        <div class="exercise" style="background: #e6fffa; border: 2px solid #38b2ac;">
+            <h2 style="color: #2c7a7b;">🎓 Practice Challenge</h2>
+            <p><strong>Your Turn:</strong> Experiment with these concepts:</p>
+            <ul style="color: #555; line-height: 2;">
+                <li>Create a layout with header (50px), content (flexible), sidebar (flexible), footer (30px)</li>
+                <li>Use minmax() to ensure content rows are at least 200px but can grow</li>
+                <li>Try repeat(4, auto) to create 4 auto-sized rows</li>
+                <li>Combine fixed and fr units: 100px 1fr 2fr 100px</li>
+                <li>Create a 3-row layout where the middle row takes 3x the space of the others</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
