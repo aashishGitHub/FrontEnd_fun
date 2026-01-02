@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 1: Flexbox vs Grid - Column Layouts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .exercise h2 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #f5576c;
+            padding-bottom: 10px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison > div {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .grid-example {
+            border: 2px solid #667eea;
+            background: #f0f4ff;
+        }
+
+        .flexbox-example {
+            border: 2px solid #f5576c;
+            background: #fff0f3;
+        }
+
+        .comparison h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .grid-example h3 {
+            color: #667eea;
+        }
+
+        .flexbox-example h3 {
+            color: #f5576c;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #75715e;
+        }
+
+        .code-block .property {
+            color: #a6e22e;
+        }
+
+        .code-block .value {
+            color: #ae81ff;
+        }
+
+        /* ============================================
+           EXERCISE 1.1: Fixed Width Columns
+           ============================================ */
+        
+        /* GRID APPROACH */
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 200px 300px 200px;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-1 > div {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        /* FLEXBOX APPROACH */
+        .flex-1 {
+            display: flex;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-1 > div {
+            background: #f5576c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-1 > div:nth-child(1) {
+            width: 200px;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .flex-1 > div:nth-child(2) {
+            width: 300px;
+            flex-shrink: 0;
+        }
+
+        .flex-1 > div:nth-child(3) {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           EXERCISE 1.2: Proportional/Fractional Layouts
+           ============================================ */
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-2 > div {
+            background: #48bb78;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-2 {
+            display: flex;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-2 > div {
+            background: #f5576c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-2 > div:nth-child(1) {
+            flex: 1; /* 1 part */
+        }
+
+        .flex-2 > div:nth-child(2) {
+            flex: 2; /* 2 parts (2x wider) */
+        }
+
+        .flex-2 > div:nth-child(3) {
+            flex: 1; /* 1 part */
+        }
+
+        /* ============================================
+           EXERCISE 1.3: Mixed Units (Fixed + Flexible)
+           ============================================ */
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-3 > div {
+            background: #ed8936;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-3 {
+            display: flex;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-3 > div {
+            background: #f5576c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-3 > div:first-child {
+            width: 250px;
+            flex-shrink: 0; /* Fixed width */
+        }
+
+        .flex-3 > div:last-child {
+            flex: 1; /* Takes remaining space */
+        }
+
+        /* ============================================
+           EXERCISE 1.4: Equal Width Columns
+           ============================================ */
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-4 > div {
+            background: #9f7aea;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-4 {
+            display: flex;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-4 > div {
+            background: #f5576c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            flex: 1; /* All items get equal space */
+        }
+
+        /* ============================================
+           EXERCISE 1.5: Responsive Auto-fit Pattern
+           ============================================ */
+        
+        .grid-5 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-5 > div {
+            background: #f56565;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            min-height: 100px;
+        }
+
+        .flex-5 {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-5 > div {
+            background: #f5576c;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            min-height: 100px;
+            flex: 1 1 200px; /* flex-grow: 1, flex-shrink: 1, flex-basis: 200px */
+            min-width: 200px;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #0c5460;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #721c24;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Exercise 1: Flexbox vs Grid - Column Layouts</h1>
+        <p style="text-align: center; color: white; margin-bottom: 30px; font-size: 1.2em;">
+            Learn how to achieve the same column layouts with both CSS Grid and Flexbox
+        </p>
+
+        <div class="exercise">
+            <h2>1.1 Fixed Width Columns</h2>
+            <p><strong>Concept:</strong> Creating columns with specific pixel widths.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">grid</span>;<br>
+<span class="property">grid-template-columns</span>: <span class="value">200px 300px 200px</span>;<br>
+<span class="property">gap</span>: <span class="value">10px</span>;
+                    </div>
+                    <div class="grid-1">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">gap</span>: <span class="value">10px</span>;<br>
+<span class="comment">/* Each item needs explicit width */</span><br>
+.item1 { <span class="property">width</span>: <span class="value">200px</span>; <span class="property">flex-shrink</span>: <span class="value">0</span>; }<br>
+.item2 { <span class="property">width</span>: <span class="value">300px</span>; <span class="property">flex-shrink</span>: <span class="value">0</span>; }<br>
+.item3 { <span class="property">width</span>: <span class="value">200px</span>; <span class="property">flex-shrink</span>: <span class="value">0</span>; }
+                    </div>
+                    <div class="flex-1">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info">
+                <strong>💡 Key Differences:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Grid:</strong> Define all columns at once with <code>grid-template-columns</code></li>
+                    <li><strong>Flexbox:</strong> Set width on each item individually + <code>flex-shrink: 0</code> to prevent shrinking</li>
+                    <li><strong>Grid Advantage:</strong> More declarative, easier to read</li>
+                    <li><strong>Flexbox Advantage:</strong> More control per item, can use <code>flex-basis</code> for responsive behavior</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>1.2 Proportional/Fractional Layouts</h2>
+            <p><strong>Concept:</strong> Dividing space proportionally (like 1:2:1 ratio).</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">1fr 2fr 1fr</span>;<br>
+<span class="comment">/* Space divided in 1:2:1 ratio */</span>
+                    </div>
+                    <div class="grid-2">
+                        <div>1</div>
+                        <div>2 (2x wider)</div>
+                        <div>3</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="comment">/* Use flex property on items */</span><br>
+.item1 { <span class="property">flex</span>: <span class="value">1</span>; } <span class="comment">/* 1 part */</span><br>
+.item2 { <span class="property">flex</span>: <span class="value">2</span>; } <span class="comment">/* 2 parts */</span><br>
+.item3 { <span class="property">flex</span>: <span class="value">1</span>; } <span class="comment">/* 1 part */</span>
+                    </div>
+                    <div class="flex-2">
+                        <div>1</div>
+                        <div>2 (2x wider)</div>
+                        <div>3</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>💡 Mental Model:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #856404; line-height: 1.8;">
+                    <li><strong>Grid:</strong> <code>1fr 2fr 1fr</code> = "Divide space into 4 parts, give 1, 2, 1"</li>
+                    <li><strong>Flexbox:</strong> <code>flex: 1</code>, <code>flex: 2</code>, <code>flex: 1</code> = Same concept!</li>
+                    <li><strong>Both work identically</strong> for proportional layouts</li>
+                    <li><strong>Grid:</strong> More concise for container-level control</li>
+                    <li><strong>Flexbox:</strong> More flexible for item-level control</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>1.3 Mixed Units (Fixed + Flexible)</h2>
+            <p><strong>Concept:</strong> Sidebar with fixed width + flexible main content.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">250px 1fr</span>;<br>
+<span class="comment">/* Sidebar fixed, content flexible */</span>
+                    </div>
+                    <div class="grid-3">
+                        <div>Sidebar (250px)</div>
+                        <div>Main Content (flexible)</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+.sidebar { <span class="property">width</span>: <span class="value">250px</span>; <span class="property">flex-shrink</span>: <span class="value">0</span>; }<br>
+.content { <span class="property">flex</span>: <span class="value">1</span>; } <span class="comment">/* Takes remaining */</span>
+                    </div>
+                    <div class="flex-3">
+                        <div>Sidebar (250px)</div>
+                        <div>Main Content (flexible)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info">
+                <strong>💡 Real-World Use:</strong> This is the classic sidebar + content layout. Both Grid and Flexbox handle it well, but:
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Grid:</strong> More semantic - the layout is defined at container level</li>
+                    <li><strong>Flexbox:</strong> More flexible - can easily add/remove items, change order</li>
+                    <li><strong>Both:</strong> Work perfectly for this pattern!</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>1.4 Equal Width Columns</h2>
+            <p><strong>Concept:</strong> Creating multiple columns of equal width.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">repeat(4, 1fr)</span>;<br>
+<span class="comment">/* 4 equal columns */</span>
+                    </div>
+                    <div class="grid-4">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+.item { <span class="property">flex</span>: <span class="value">1</span>; }<br>
+<span class="comment">/* All items get equal space */</span>
+                    </div>
+                    <div class="flex-4">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>💡 Comparison:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #856404; line-height: 1.8;">
+                    <li><strong>Grid:</strong> <code>repeat(4, 1fr)</code> - explicit about number of columns</li>
+                    <li><strong>Flexbox:</strong> <code>flex: 1</code> on all items - automatically divides space</li>
+                    <li><strong>Grid Advantage:</strong> Guarantees exactly 4 columns (items wrap to new row)</li>
+                    <li><strong>Flexbox Advantage:</strong> Works with any number of items (more flexible)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>1.5 Responsive Auto-fit Pattern</h2>
+            <p><strong>Concept:</strong> Responsive grid that adjusts columns based on available space.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">repeat(auto-fit, minmax(200px, 1fr))</span>;<br>
+<span class="comment">/* Auto-fit creates responsive columns */</span>
+                    </div>
+                    <div class="grid-5">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">flex-wrap</span>: <span class="value">wrap</span>;<br>
+.item {<br>
+&nbsp;&nbsp;<span class="property">flex</span>: <span class="value">1 1 200px</span>; <span class="comment">/* grow shrink basis */</span><br>
+&nbsp;&nbsp;<span class="property">min-width</span>: <span class="value">200px</span>;<br>
+}
+                    </div>
+                    <div class="flex-5">
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Important Differences:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #721c24; line-height: 1.8;">
+                    <li><strong>Grid:</strong> <code>auto-fit</code> creates exactly the right number of columns - items stay in rows</li>
+                    <li><strong>Flexbox:</strong> <code>flex-wrap</code> wraps items to new rows - less precise control</li>
+                    <li><strong>Grid Advantage:</strong> Better for card grids, image galleries - maintains row structure</li>
+                    <li><strong>Flexbox Advantage:</strong> Better for flexible content that can wrap naturally</li>
+                    <li><strong>Try resizing:</strong> Grid maintains rows better, Flexbox wraps more organically</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>📊 When to Use Grid vs Flexbox for Columns</h2>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Use Case</th>
+                        <th>CSS Grid</th>
+                        <th>Flexbox</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Fixed column widths</strong></td>
+                        <td>✅ Better - Define all at once</td>
+                        <td>⚠️ Works but requires per-item styles</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Proportional layouts</strong></td>
+                        <td>✅ Great - <code>1fr 2fr 1fr</code></td>
+                        <td>✅ Great - <code>flex: 1</code>, <code>flex: 2</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Equal width columns</strong></td>
+                        <td>✅ <code>repeat(4, 1fr)</code></td>
+                        <td>✅ <code>flex: 1</code> on all</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Responsive card grids</strong></td>
+                        <td>✅✅ Best - <code>auto-fit</code> maintains rows</td>
+                        <td>⚠️ Works but wraps less predictably</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Sidebar + content</strong></td>
+                        <td>✅ Great</td>
+                        <td>✅ Great - Very common pattern</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dynamic number of items</strong></td>
+                        <td>⚠️ Need to know column count</td>
+                        <td>✅✅ Best - Automatically adapts</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info" style="margin-top: 20px;">
+                <strong>🎯 General Rule:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Use Grid</strong> when you need to control both rows AND columns, or when you want explicit column definitions</li>
+                    <li><strong>Use Flexbox</strong> when you have a single row/column of items that need flexible sizing</li>
+                    <li><strong>Use Both Together:</strong> Grid for page layout, Flexbox for component alignment (very common!)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise" style="background: #e6fffa; border: 2px solid #38b2ac;">
+            <h2 style="color: #2c7a7b;">🎓 Practice Challenge</h2>
+            <p><strong>Your Turn:</strong> Try recreating these layouts with both Grid and Flexbox:</p>
+            <ul style="color: #555; line-height: 2;">
+                <li>Create a 3-column layout: 150px | flexible | 100px (try both methods)</li>
+                <li>Make 5 equal-width columns (compare Grid's <code>repeat(5, 1fr)</code> vs Flexbox's <code>flex: 1</code>)</li>
+                <li>Build a responsive card grid that wraps (see which maintains rows better)</li>
+                <li>Create a proportional layout: 1fr 3fr 1fr (both should look identical!)</li>
+                <li>Experiment: Add/remove items and see how each behaves</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+
