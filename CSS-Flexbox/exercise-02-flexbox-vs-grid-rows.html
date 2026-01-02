@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise 2: Flexbox vs Grid - Row/Vertical Layouts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .exercise {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .exercise h2 {
+            color: #4facfe;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #4facfe;
+            padding-bottom: 10px;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .comparison > div {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .grid-example {
+            border: 2px solid #667eea;
+            background: #f0f4ff;
+        }
+
+        .flexbox-example {
+            border: 2px solid #4facfe;
+            background: #e6f7ff;
+        }
+
+        .comparison h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .grid-example h3 {
+            color: #667eea;
+        }
+
+        .flexbox-example h3 {
+            color: #4facfe;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #75715e;
+        }
+
+        .code-block .property {
+            color: #a6e22e;
+        }
+
+        .code-block .value {
+            color: #ae81ff;
+        }
+
+        /* ============================================
+           EXERCISE 2.1: Fixed Height Rows
+           ============================================ */
+        
+        .grid-1 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 100px 150px 100px;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-1 > div {
+            background: #667eea;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-1 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-1 > div {
+            background: #4facfe;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-1 > div:nth-child(1) {
+            height: 100px;
+            flex-shrink: 0;
+        }
+
+        .flex-1 > div:nth-child(2) {
+            height: 150px;
+            flex-shrink: 0;
+        }
+
+        .flex-1 > div:nth-child(3) {
+            height: 100px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           EXERCISE 2.2: Proportional Vertical Space
+           ============================================ */
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 80px 1fr 60px;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            height: 400px;
+        }
+
+        .grid-2 > div {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-2 > div:nth-child(1) {
+            background: #667eea;
+            grid-column: 1 / -1;
+        }
+
+        .grid-2 > div:nth-child(2),
+        .grid-2 > div:nth-child(3) {
+            background: #764ba2;
+        }
+
+        .grid-2 > div:nth-child(4) {
+            background: #667eea;
+            grid-column: 1 / -1;
+        }
+
+        .flex-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            height: 400px;
+        }
+
+        .flex-2 > div {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-2 > div:nth-child(1) {
+            background: #4facfe;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .flex-2 > div:nth-child(2),
+        .flex-2 > div:nth-child(3) {
+            background: #00f2fe;
+            flex: 1; /* Takes remaining space */
+        }
+
+        .flex-2 > div:nth-child(4) {
+            background: #4facfe;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           EXERCISE 2.3: Auto/Content-Based Sizing
+           ============================================ */
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto auto;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .grid-3 > div {
+            background: #48bb78;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .grid-3 > div:nth-child(2) {
+            padding: 40px 20px;
+        }
+
+        .grid-3 > div:nth-child(5) {
+            padding: 60px 20px;
+        }
+
+        .flex-3 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .flex-3 > div {
+            background: #4facfe;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .flex-3 > div:nth-child(2) {
+            padding: 40px 20px;
+        }
+
+        .flex-3 > div:nth-child(5) {
+            padding: 60px 20px;
+        }
+
+        /* ============================================
+           EXERCISE 2.4: Minmax for Rows
+           ============================================ */
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: minmax(100px, auto) minmax(150px, 1fr) minmax(80px, auto);
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            height: 500px;
+        }
+
+        .grid-4 > div {
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-4 > div:nth-child(1) {
+            background: #667eea;
+            grid-column: 1 / -1;
+        }
+
+        .grid-4 > div:nth-child(2),
+        .grid-4 > div:nth-child(3) {
+            background: #764ba2;
+        }
+
+        .grid-4 > div:nth-child(4) {
+            background: #667eea;
+            grid-column: 1 / -1;
+        }
+
+        .flex-4 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            height: 500px;
+        }
+
+        .flex-4 > div {
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-4 > div:nth-child(1) {
+            background: #4facfe;
+            min-height: 100px;
+            flex-shrink: 0;
+        }
+
+        .flex-4 > div:nth-child(2),
+        .flex-4 > div:nth-child(3) {
+            background: #00f2fe;
+            min-height: 150px;
+            flex: 1; /* Takes remaining space */
+        }
+
+        .flex-4 > div:nth-child(4) {
+            background: #4facfe;
+            min-height: 80px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           EXERCISE 2.5: Classic Header/Content/Footer
+           ============================================ */
+        
+        .grid-5 {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            grid-template-rows: 60px 1fr 40px;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            height: 500px;
+        }
+
+        .grid-5 > div {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .grid-5 > div:nth-child(1) {
+            background: #667eea;
+            grid-column: 1 / -1;
+        }
+
+        .grid-5 > div:nth-child(2) {
+            background: #764ba2;
+        }
+
+        .grid-5 > div:nth-child(3) {
+            background: #9f7aea;
+        }
+
+        .grid-5 > div:nth-child(4) {
+            background: #667eea;
+            grid-column: 1 / -1;
+        }
+
+        .flex-5 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            height: 500px;
+        }
+
+        .flex-5-wrapper {
+            display: flex;
+            flex: 1;
+            gap: 10px;
+        }
+
+        .flex-5 > div {
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flex-5 > div:nth-child(1) {
+            background: #4facfe;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .flex-5 > div:nth-child(2) {
+            background: #00f2fe;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .flex-5 > div:nth-child(3) {
+            background: #4facfe;
+            flex: 1;
+        }
+
+        .flex-5 > div:nth-child(4) {
+            background: #4facfe;
+            height: 40px;
+            flex-shrink: 0;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .note strong {
+            color: #856404;
+        }
+
+        .info {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info strong {
+            color: #0c5460;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning strong {
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Exercise 2: Flexbox vs Grid - Row/Vertical Layouts</h1>
+        <p style="text-align: center; color: white; margin-bottom: 30px; font-size: 1.2em;">
+            Compare vertical layouts: Grid rows vs Flexbox column direction
+        </p>
+
+        <div class="exercise">
+            <h2>2.1 Fixed Height Rows</h2>
+            <p><strong>Concept:</strong> Defining specific row heights.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">100px 150px 100px</span>;<br>
+<span class="comment">/* Define all row heights at once */</span>
+                    </div>
+                    <div class="grid-1">
+                        <div>Row 1 (100px)</div>
+                        <div>Row 1</div>
+                        <div>Row 1</div>
+                        <div>Row 2 (150px)</div>
+                        <div>Row 2</div>
+                        <div>Row 2</div>
+                        <div>Row 3 (100px)</div>
+                        <div>Row 3</div>
+                        <div>Row 3</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">flex-direction</span>: <span class="value">column</span>;<br>
+.item1 { <span class="property">height</span>: <span class="value">100px</span>; }<br>
+.item2 { <span class="property">height</span>: <span class="value">150px</span>; }<br>
+.item3 { <span class="property">height</span>: <span class="value">100px</span>; }
+                    </div>
+                    <div class="flex-1">
+                        <div>Row 1 (100px)</div>
+                        <div>Row 2 (150px)</div>
+                        <div>Row 3 (100px)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info">
+                <strong>💡 Key Difference:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Grid:</strong> Defines rows at container level - all items in same row have same height</li>
+                    <li><strong>Flexbox:</strong> Sets height per item - each item can have different height independently</li>
+                    <li><strong>Grid Advantage:</strong> Perfect alignment across columns in same row</li>
+                    <li><strong>Flexbox Advantage:</strong> More flexible per-item control</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.2 Proportional Vertical Space (Header/Content/Footer)</h2>
+            <p><strong>Concept:</strong> Classic layout: fixed header, flexible content, fixed footer.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">80px 1fr 60px</span>;<br>
+<span class="comment">/* Header | Flexible | Footer */</span>
+                    </div>
+                    <div class="grid-2">
+                        <div>Header (80px)</div>
+                        <div>Content (flexible)</div>
+                        <div>Sidebar</div>
+                        <div>Footer (60px)</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">flex-direction</span>: <span class="value">column</span>;<br>
+.header { <span class="property">height</span>: <span class="value">80px</span>; }<br>
+.content { <span class="property">flex</span>: <span class="value">1</span>; }<br>
+.footer { <span class="property">height</span>: <span class="value">60px</span>; }
+                    </div>
+                    <div class="flex-2">
+                        <div>Header (80px)</div>
+                        <div>Content (flexible)</div>
+                        <div>Sidebar</div>
+                        <div>Footer (60px)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>💡 Real-World Pattern:</strong> This is the most common website layout! Both Grid and Flexbox handle it excellently:
+                <ul style="margin-top: 10px; padding-left: 20px; color: #856404; line-height: 1.8;">
+                    <li><strong>Grid:</strong> More semantic - layout structure defined at container</li>
+                    <li><strong>Flexbox:</strong> Very intuitive - <code>flex: 1</code> on content makes it grow</li>
+                    <li><strong>Both:</strong> Work perfectly for this pattern!</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.3 Auto/Content-Based Sizing</h2>
+            <p><strong>Concept:</strong> Rows that size based on their content.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">auto auto auto</span>;<br>
+<span class="comment">/* Rows size to content */</span>
+                    </div>
+                    <div class="grid-3">
+                        <div>Row 1<br>Normal</div>
+                        <div>Row 1<br>Taller</div>
+                        <div>Row 1</div>
+                        <div>Row 2</div>
+                        <div>Row 2<br>Even taller<br>More lines</div>
+                        <div>Row 2</div>
+                        <div>Row 3</div>
+                        <div>Row 3</div>
+                        <div>Row 3</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">flex-direction</span>: <span class="value">column</span>;<br>
+<span class="comment">/* Items size to content by default */</span>
+                    </div>
+                    <div class="flex-3">
+                        <div>Row 1<br>Normal</div>
+                        <div>Row 2<br>Taller</div>
+                        <div>Row 3<br>Even taller<br>More lines</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info">
+                <strong>💡 Comparison:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Grid:</strong> <code>auto</code> makes each row as tall as its tallest item</li>
+                    <li><strong>Flexbox:</strong> Items naturally size to content - no special property needed!</li>
+                    <li><strong>Both:</strong> Work identically for content-based sizing</li>
+                    <li><strong>Flexbox Advantage:</strong> More natural - it's the default behavior</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.4 Minmax for Rows</h2>
+            <p><strong>Concept:</strong> Rows with minimum height but can grow.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-rows</span>: <span class="value">minmax(100px, auto) minmax(150px, 1fr) minmax(80px, auto)</span>;<br>
+<span class="comment">/* Min height, but can grow */</span>
+                    </div>
+                    <div class="grid-4">
+                        <div>Header (min 100px)</div>
+                        <div>Content (min 150px, flexible)</div>
+                        <div>Sidebar</div>
+                        <div>Footer (min 80px)</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">flex-direction</span>: <span class="value">column</span>;<br>
+.header { <span class="property">min-height</span>: <span class="value">100px</span>; }<br>
+.content { <span class="property">min-height</span>: <span class="value">150px</span>; <span class="property">flex</span>: <span class="value">1</span>; }<br>
+.footer { <span class="property">min-height</span>: <span class="value">80px</span>; }
+                    </div>
+                    <div class="flex-4">
+                        <div>Header (min 100px)</div>
+                        <div>Content (min 150px, flexible)</div>
+                        <div>Sidebar</div>
+                        <div>Footer (min 80px)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>💡 Comparison:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #856404; line-height: 1.8;">
+                    <li><strong>Grid:</strong> <code>minmax()</code> is built-in and powerful</li>
+                    <li><strong>Flexbox:</strong> Use <code>min-height</code> + <code>flex</code> for similar effect</li>
+                    <li><strong>Grid Advantage:</strong> More concise syntax</li>
+                    <li><strong>Flexbox Advantage:</strong> More intuitive - standard CSS properties</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>2.5 Classic Dashboard Layout</h2>
+            <p><strong>Concept:</strong> Header, sidebar, content, footer - the complete layout.</p>
+            
+            <div class="comparison">
+                <div class="grid-example">
+                    <h3>🔷 CSS Grid Approach</h3>
+                    <div class="code-block">
+<span class="property">grid-template-columns</span>: <span class="value">200px 1fr</span>;<br>
+<span class="property">grid-template-rows</span>: <span class="value">60px 1fr 40px</span>;<br>
+<span class="comment">/* 2D layout defined at container */</span>
+                    </div>
+                    <div class="grid-5">
+                        <div>Header</div>
+                        <div>Sidebar</div>
+                        <div>Main Content</div>
+                        <div>Footer</div>
+                    </div>
+                </div>
+
+                <div class="flexbox-example">
+                    <h3>🔶 Flexbox Approach</h3>
+                    <div class="code-block">
+<span class="property">display</span>: <span class="value">flex</span>;<br>
+<span class="property">flex-direction</span>: <span class="value">column</span>;<br>
+<span class="comment">/* Need nested flex for sidebar */</span><br>
+.content-area {<br>
+&nbsp;&nbsp;<span class="property">display</span>: <span class="value">flex</span>;<br>
+&nbsp;&nbsp;<span class="property">flex</span>: <span class="value">1</span>;<br>
+}
+                    </div>
+                    <div class="flex-5">
+                        <div>Header</div>
+                        <div style="display: flex; flex: 1; gap: 10px;">
+                            <div style="background: #00f2fe; width: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 5px; color: white; font-weight: bold;">Sidebar</div>
+                            <div style="background: #4facfe; flex: 1; display: flex; align-items: center; justify-content: center; border-radius: 5px; color: white; font-weight: bold;">Main Content</div>
+                        </div>
+                        <div>Footer</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="warning">
+                <strong>⚠️ Important Difference:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #721c24; line-height: 1.8;">
+                    <li><strong>Grid:</strong> Handles 2D layouts (rows AND columns) natively - one container!</li>
+                    <li><strong>Flexbox:</strong> 1D only - need nested flex containers for 2D layouts</li>
+                    <li><strong>Grid Advantage:</strong> Much simpler for complex 2D layouts</li>
+                    <li><strong>Flexbox Advantage:</strong> Better for simple vertical or horizontal stacks</li>
+                    <li><strong>Rule of Thumb:</strong> Use Grid for page layouts, Flexbox for component alignment</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise">
+            <h2>📊 When to Use Grid vs Flexbox for Rows/Vertical Layouts</h2>
+            
+            <div class="info">
+                <strong>🎯 Decision Guide:</strong>
+                <ul style="margin-top: 10px; padding-left: 20px; color: #0c5460; line-height: 1.8;">
+                    <li><strong>Simple vertical stack (header/content/footer):</strong> Both work great! Flexbox is slightly simpler</li>
+                    <li><strong>2D layout (rows AND columns):</strong> Grid is MUCH better - one container vs nested flex</li>
+                    <li><strong>Content-based heights:</strong> Flexbox is more natural (default behavior)</li>
+                    <li><strong>Fixed row heights:</strong> Grid is more declarative</li>
+                    <li><strong>Proportional vertical space:</strong> Both work identically</li>
+                    <li><strong>Complex dashboards:</strong> Grid wins - handles 2D layouts natively</li>
+                </ul>
+            </div>
+
+            <div class="note" style="margin-top: 20px;">
+                <strong>💡 Best Practice:</strong> Use Grid for page-level layouts (2D), Flexbox for component-level alignment (1D). They complement each other perfectly!
+            </div>
+        </div>
+
+        <div class="exercise" style="background: #e6fffa; border: 2px solid #38b2ac;">
+            <h2 style="color: #2c7a7b;">🎓 Practice Challenge</h2>
+            <p><strong>Your Turn:</strong> Try these vertical layouts with both methods:</p>
+            <ul style="color: #555; line-height: 2;">
+                <li>Create header (50px) + content (flexible) + footer (30px) - compare both</li>
+                <li>Build a dashboard with sidebar - see how Grid handles 2D better</li>
+                <li>Make rows with min-height that can grow - compare minmax() vs min-height + flex</li>
+                <li>Create a form layout with labels and inputs stacked vertically</li>
+                <li>Experiment: Add/remove items and see how each behaves</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+
